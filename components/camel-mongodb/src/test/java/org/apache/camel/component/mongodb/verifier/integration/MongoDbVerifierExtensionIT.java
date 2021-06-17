@@ -55,6 +55,7 @@ public class MongoDbVerifierExtensionIT extends AbstractMongoDbITSupport {
         parameters.put("host", service.getConnectionAddress());
         parameters.put("user", USER);
         parameters.put("password", PASSWORD);
+        parameters.put("adminDB", dbName);
         //Given
         ComponentVerifierExtension.Result result
                 = getExtension().verify(ComponentVerifierExtension.Scope.CONNECTIVITY, parameters);

@@ -16,9 +16,9 @@
  */
 package org.apache.camel.component.mongodb.integration;
 
+import java.util.Collections;
 import java.util.Formatter;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
@@ -112,17 +112,16 @@ public abstract class AbstractMongoDbITSupport extends CamelTestSupport {
      * Useful to simulate the presence of an authenticated user with name {@value #USER} and password {@value #PASSWORD}
      */
     protected void createAuthorizationUser() {
-        MongoDatabase admin = mongo.getDatabase("admin");
-        MongoCollection<Document> usersCollection = admin.getCollection("system.users");
-        if (usersCollection.countDocuments() == 0) {
+        BasicDBObject getUsersCommand = new BasicDBObject("usersInfo", new BasicDBObject("user", USER).append("db", dbName));
+        Document result = db.runCommand(getUsersCommand);
+        List users = result.get("users", List.class);
+        if (users.isEmpty()) {
+            BasicDBObject createUserCommand = new BasicDBObject("createUser", USER)
+                    .append("pwd", PASSWORD)
+                    .append("roles",
+                            Collections.singletonList(new BasicDBObject("role", "readWrite").append("db", dbName)));
 
-            Map<String, Object> commandArguments = new LinkedHashMap<>();
-            commandArguments.put("createUser", USER);
-            commandArguments.put("pwd", PASSWORD);
-            String[] roles = { "readWrite" };
-            commandArguments.put("roles", roles);
-            BasicDBObject command = new BasicDBObject(commandArguments);
-            admin.runCommand(command);
+            db.runCommand(createUserCommand);
         }
     }
 

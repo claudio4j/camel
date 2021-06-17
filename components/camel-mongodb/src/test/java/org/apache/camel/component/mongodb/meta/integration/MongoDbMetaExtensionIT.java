@@ -85,6 +85,7 @@ public class MongoDbMetaExtensionIT extends AbstractMongoDbITSupport {
                 new CreateCollectionOptions().validationOptions(collOptions));
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("database", database);
+        parameters.put("adminDB", database);
         parameters.put("collection", collection);
         parameters.put("host", service.getConnectionAddress());
         parameters.put("user", USER);
@@ -112,6 +113,7 @@ public class MongoDbMetaExtensionIT extends AbstractMongoDbITSupport {
         // Given
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("database", database);
+        parameters.put("adminDB", database);
         parameters.put("collection", collection);
         parameters.put("host", service.getConnectionAddress());
         parameters.put("user", USER);
@@ -146,6 +148,7 @@ public class MongoDbMetaExtensionIT extends AbstractMongoDbITSupport {
         // Given
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("database", database);
+        parameters.put("adminDB", database);
         parameters.put("collection", collection);
         parameters.put("host", service.getConnectionAddress());
         parameters.put("user", USER);
